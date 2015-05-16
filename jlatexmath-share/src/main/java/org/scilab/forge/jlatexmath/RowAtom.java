@@ -31,10 +31,12 @@
 
 package org.scilab.forge.jlatexmath;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
 import org.scilab.forge.jlatexmath.dynamic.DynamicAtom;
+import org.scilab.forge.jlatexmath.editor.TreeEditor;
 
 /**
  * An atom representing a horizontal row of other atoms, to be seperated by glue. It's also
@@ -125,6 +127,8 @@ public class RowAtom extends Atom implements Row {
 	}
 
 	public Box createBox(TeXEnvironment env) {
+		TreeEditor.addAtoms(this);
+    	this.setTreeRelation();
 		TeXFont tf = env.getTeXFont();
 		HorizontalBox hBox = new HorizontalBox(env.getColor(), env.getBackground());
 		int position = 0;
@@ -226,10 +230,21 @@ public class RowAtom extends Atom implements Row {
 		}
 		// reset previousAtom
 		previousAtom = null;
-
+		usedBox = hBox;
 		return hBox;
 	}
 
+	 public void setTreeRelation() {
+	    	Atom at = null;
+	    	int j = elements.size();
+	    	int i = 0;
+	    	while(i != j) {
+	    		at = elements.get(i);
+	    		at.setTreeParent(this);
+	    		i++;
+	    	}
+	  }
+	
 	public void setPreviousAtom(Dummy prev) {
 		previousAtom = prev;
 	}
@@ -249,4 +264,32 @@ public class RowAtom extends Atom implements Row {
 			return (elements.get(elements.size() - 1)).getRightType();
 		}
 	}
+
+	public LinkedList<Atom> getElements() {
+		return elements;
+	}
+	
+	 public Atom getPrevSibling(Atom at){
+	    	if(at == elements.get(0)){
+	    		return getTreeParent() == null ? this : getTreeParent().getPrevSibling(this);
+	    	}
+	    	for(int i =1; i< elements.size();i++){
+	    		if(elements.get(i) == at){
+	    			return elements.get(i-1).getPrevSibling(null);
+	    		}
+	    	}
+	    	return at == null ? elements.get(elements.size() - 1).getPrevSibling(null) : this;
+	    }
+	    
+	    public Atom getNextSibling(Atom at){
+	    	if(at == elements.get(elements.size() - 1)){
+	    		return getTreeParent() == null ? this : getTreeParent().getNextSibling(this);
+	    	}
+	    	for(int i =0; i+1< elements.size();i++){
+	    		if(elements.get(i) == at){
+	    			return elements.get(i+1).getNextSibling(null);
+	    		}
+	    	}
+	    	return at == null ? elements.get(0).getNextSibling(null) : this;
+	    }
 }

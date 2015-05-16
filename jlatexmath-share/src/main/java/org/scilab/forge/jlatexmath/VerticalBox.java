@@ -118,4 +118,14 @@ class VerticalBox extends Box {
 
 		return fontId;
 	}
+	
+	public void updateRectangle(float scale, float x, float y) {
+        super.updateRectangle(scale, x, y);
+        float yPos = y - height;
+        for (Box b : children) {
+            yPos += b.getHeight();
+            b.updateRectangle(scale, x + b.getShift() - leftMostPos, yPos);
+            yPos += b.getDepth();
+        }
+    }
 }

@@ -190,6 +190,8 @@ public class TeXFormula {
 
 	public boolean isColored = false;
 
+	private TeXEnvironment style;
+
 	/**
 	 * Creates an empty TeXFormula.
 	 *
@@ -546,7 +548,8 @@ public class TeXFormula {
 	/*
 	 * Convert this TeXFormula into a box, starting form the given style
 	 */
-	private Box createBox(TeXEnvironment style) {
+	public Box createBox(TeXEnvironment style) {
+		this.style = style;
 		if (root == null)
 			return new StrutBox(0, 0, 0, 0);
 		else
@@ -999,5 +1002,17 @@ public class TeXFormula {
 			this.sansserif = sansserif;
 			this.serif = serif;
 		}
+	}
+
+	public Atom getRoot() {
+		return this.root;
+	}
+
+	public void setRoot(Atom root) {
+		this.root = root;
+	}
+
+	public TeXEnvironment getStyle() {
+		return style;
 	}
 }

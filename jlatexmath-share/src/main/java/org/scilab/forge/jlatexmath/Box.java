@@ -37,6 +37,7 @@ import org.scilab.forge.jlatexmath.platform.FactoryProvider;
 import org.scilab.forge.jlatexmath.platform.Geom;
 import org.scilab.forge.jlatexmath.platform.Graphics;
 import org.scilab.forge.jlatexmath.platform.geom.GeomFactory;
+import org.scilab.forge.jlatexmath.platform.geom.Rectangle2D;
 import org.scilab.forge.jlatexmath.platform.graphics.BasicStroke;
 import org.scilab.forge.jlatexmath.platform.graphics.Color;
 import org.scilab.forge.jlatexmath.platform.graphics.Graphics2DInterface;
@@ -115,6 +116,8 @@ public abstract class Box {
 	protected Box parent;
 	protected Box elderParent;
 	protected Color markForDEBUG;
+
+	private Rectangle2D rectangle = FactoryProvider.INSTANCE.getGeomFactory().createRectangle2D(0,0,0,0);
 
 	/**
 	 * Inserts the given box at the end of the list of child boxes.
@@ -341,5 +344,25 @@ public abstract class Box {
 	 */
 	protected void endDraw(Graphics2DInterface g2) {
 		g2.setColor(prevColor);
+	}
+	
+	public void updateRectangle(float scale, float x, float y) {
+		
+		float w = width;
+		if (w < 0) {
+	            x += w;
+	            w = -w;
+	    }
+	    x = (float) (x * scale);
+	    y = (float) ((y - height) * scale);
+	    double rwidth = (float) (w * scale);
+	    double rheight = (float) ((height + depth) * scale);
+	    this.rectangle = FactoryProvider.INSTANCE.getGeomFactory().createRectangle2D(x, y, rwidth, rheight);
+	}
+	    
+	public Rectangle2D getRectangle() {
+		return FactoryProvider.INSTANCE.getGeomFactory().createRectangle2D(rectangle.getX(), 
+				rectangle.getY(), rectangle.getWidth(), rectangle.getHeight());
+	    //return this.rectangle;
 	}
 }

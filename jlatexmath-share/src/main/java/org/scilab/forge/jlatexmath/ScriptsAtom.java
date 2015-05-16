@@ -40,11 +40,11 @@ public class ScriptsAtom extends Atom {
 	private final static SpaceAtom SCRIPT_SPACE = new SpaceAtom(TeXConstants.UNIT_POINT, 0.5f, 0, 0);
 
 	// base atom
-	private final Atom base;
+	private Atom base;
 
 	// subscript and superscript to be attached to the base (if not null)
 	private final Atom subscript;
-	private final Atom superscript;
+	private Atom superscript;
 	private int align = TeXConstants.ALIGN_LEFT;
 
 	public ScriptsAtom(Atom base, Atom sub, Atom sup) {
@@ -214,5 +214,26 @@ public class ScriptsAtom extends Atom {
 
 	public int getRightType() {
 		return base.getRightType();
+	}
+
+	public Atom getBase() {
+		return base;
+	}
+
+	public Atom getSuperScript() {
+		return this.superscript;
+	}
+	
+	public Atom getSubScript() {
+		return this.subscript;
+	}
+
+	public void setBase(Atom base) {
+		this.base = base;
+		
+	}
+
+	public void setSuperScript(Atom superScript2) {
+		this.superscript = superScript2;
 	}
 }

@@ -113,4 +113,30 @@ public class OverUnderBox extends Box {
 	public int getLastFontId() {
 		return base.getLastFontId();
 	}
+	
+	public void updateRectangle(float scale, float x, float y) {
+        super.updateRectangle(scale, x, y);
+        base.updateRectangle(scale, x, y);
+
+        float yVar = y - base.height - del.getWidth();
+        del.setDepth(del.getHeight() + del.getDepth());
+        del.setHeight(0);
+        if (over) {
+            del.updateRectangle(scale, x + (del.height + del.depth) * 0.75f, yVar);
+            if (script != null) {
+                script.updateRectangle(scale, x, yVar - kern - script.depth);
+            }
+        }
+
+        yVar = y + base.depth;
+        if (!over) { // draw delimiter and script under base box
+            del.updateRectangle(scale, x + (del.getHeight() + del.depth) * 0.75f, yVar);
+            yVar += del.getWidth();
+
+            // draw subscript
+            if (script != null) {
+                script.updateRectangle(scale, x, yVar + kern + script.height);
+            }
+        }
+    }
 }

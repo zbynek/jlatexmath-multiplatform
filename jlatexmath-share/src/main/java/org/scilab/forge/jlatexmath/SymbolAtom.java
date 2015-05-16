@@ -33,6 +33,7 @@ package org.scilab.forge.jlatexmath;
 
 import java.util.Map;
 
+import org.scilab.forge.jlatexmath.editor.TreeEditor;
 import org.scilab.forge.jlatexmath.exception.InvalidSymbolTypeException;
 import org.scilab.forge.jlatexmath.exception.SymbolMappingNotFoundException;
 import org.scilab.forge.jlatexmath.exception.SymbolNotFoundException;
@@ -153,6 +154,7 @@ public class SymbolAtom extends CharSymbol {
 	}
 
 	public Box createBox(TeXEnvironment env) {
+		TreeEditor.addAtoms(this);
 		TeXFont tf = env.getTeXFont();
 		int style = env.getStyle();
 		Char c = tf.getChar(name, style);
@@ -175,8 +177,10 @@ public class SymbolAtom extends CharSymbol {
 			HorizontalBox hb = new HorizontalBox(cb);
 			if (delta > TeXFormula.PREC)
 				hb.add(new StrutBox(delta, 0, 0, 0));
+			usedBox = hb;
 			return hb;
 		}
+		usedBox = cb;
 		return cb;
 	}
 

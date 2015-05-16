@@ -57,4 +57,9 @@ public class ReflectBox extends Box {
 	public int getLastFontId() {
 		return box.getLastFontId();
 	}
+	
+	public void updateRectangle(float scale, float x, float y) {
+        super.updateRectangle(scale, x, y);
+        box.updateRectangle(-1, x + width, y);
+    }
 }

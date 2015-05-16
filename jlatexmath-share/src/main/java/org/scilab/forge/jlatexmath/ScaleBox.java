@@ -69,4 +69,10 @@ public class ScaleBox extends Box {
 	public int getLastFontId() {
 		return box.getLastFontId();
 	}
+	
+    public void updateRectangle(float scale, float x, float y) {
+        super.updateRectangle(scale, x, y);
+        float dec = xscl < 0 ? width : 0;
+        box.updateRectangle((float) (xscl * scale), x + dec, y);
+    }
 }

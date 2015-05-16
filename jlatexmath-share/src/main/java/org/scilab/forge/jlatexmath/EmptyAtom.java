@@ -28,15 +28,33 @@
 
 package org.scilab.forge.jlatexmath;
 
+import org.scilab.forge.jlatexmath.editor.TreeEditor;
+
 /**
  * An empty atom.
  */
 public class EmptyAtom extends Atom {
 
+	float height;
+	float width;
+	float depth;
+	float shift;
 	public EmptyAtom() {
+		this(0,0,0,0);
 	}
 
-	public Box createBox(TeXEnvironment env) {
-		return new StrutBox(0, 0, 0, 0);
-	}
+	public EmptyAtom(float h, float w, float d, float s)
+    {
+    	height = h;
+    	width = w;
+    	depth = d;
+    	shift = s;
+    }
+
+	public Box createBox(TeXEnvironment env) 
+    {
+    	TreeEditor.addAtoms(this);
+    	usedBox = new StrutBox(height, width, depth, shift);
+    	return usedBox;
+    }
 }

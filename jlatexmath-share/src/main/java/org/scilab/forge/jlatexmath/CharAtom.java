@@ -29,6 +29,8 @@
 
 package org.scilab.forge.jlatexmath;
 
+import org.scilab.forge.jlatexmath.editor.TreeEditor;
+
 /**
  * An atom representing exactly one alphanumeric character and the text style in which it should be
  * drawn.
@@ -54,6 +56,7 @@ public class CharAtom extends CharSymbol {
 	}
 
 	public Box createBox(TeXEnvironment env) {
+		TreeEditor.addAtoms(this);
 		if (textStyle == null) {
 			String ts = env.getTextStyle();
 			if (ts != null) {
@@ -62,13 +65,13 @@ public class CharAtom extends CharSymbol {
 		}
 		boolean smallCap = env.getSmallCap();
 		Char ch = getChar(env.getTeXFont(), env.getStyle(), smallCap);
-		Box box = new CharBox(ch);
+		usedBox = new CharBox(ch);
 		if (smallCap && Character.isLowerCase(c)) {
 			// We have a small capital
-			box = new ScaleBox(box, 0.8f, 0.8f);
+			usedBox = new ScaleBox(usedBox, 0.8f, 0.8f);
 		}
 
-		return box;
+		return usedBox;
 	}
 
 	public char getCharacter() {

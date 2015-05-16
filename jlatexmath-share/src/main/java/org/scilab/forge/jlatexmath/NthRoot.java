@@ -39,10 +39,10 @@ public class NthRoot extends Atom {
 	private static final float FACTOR = 0.55f;
 
 	// base atom to be put under the root sign
-	private final Atom base;
+	private Atom base;
 
 	// root atom to be put in the upper left corner above the root sign
-	private final Atom root;
+	private Atom root;
 
 	public NthRoot(Atom base, Atom root) {
 		this.base = base == null ? new EmptyAtom() : base;
@@ -107,5 +107,49 @@ public class NthRoot extends Atom {
 			res.add(squareRoot);
 			return res;
 		}
+	}
+
+	public Atom getBase() {
+		return this.base;
+	}
+
+	public Atom getRoot() {
+		return root;
+	}
+
+	public void setBase(Atom base2) {
+		this.base = base2;		
+	}
+
+	public void setRoot(Atom root) {
+		this.root = root;
+		
+	}
+	
+	@Override
+	public Atom getNextSibling(Atom at) 
+	{
+		if(at == root){
+			return base.getNextSibling(base);
+		}
+		if(at == base){
+			return getTreeParent() == null ? this : getTreeParent().getNextSibling(this);
+		}
+		
+		return root == null ? base.getNextSibling(null) : root.getNextSibling(null);
+	}
+
+
+
+	@Override
+	public Atom getPrevSibling(Atom at)
+	{
+		if(at == root || (at == base && root == null)){
+			return getTreeParent() == null ? this : getTreeParent().getPrevSibling(this);
+		}
+		if(at == base){
+			return root.getPrevSibling(null);
+		}
+		return base.getPrevSibling(null);
 	}
 }

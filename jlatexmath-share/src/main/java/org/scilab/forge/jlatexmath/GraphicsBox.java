@@ -86,4 +86,8 @@ public class GraphicsBox extends Box {
 	public int getLastFontId() {
 		return 0;
 	}
+	
+	public void updateRectangle(float scale, float x, float y) {
+        super.updateRectangle(scl * scale, x, y);
+    }
 }

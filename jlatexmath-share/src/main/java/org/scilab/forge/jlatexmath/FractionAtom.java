@@ -29,6 +29,7 @@
 
 package org.scilab.forge.jlatexmath;
 
+import org.scilab.forge.jlatexmath.editor.TreeEditor;
 import org.scilab.forge.jlatexmath.exception.InvalidUnitException;
 
 /**
@@ -169,6 +170,8 @@ public class FractionAtom extends Atom {
 	}
 
 	public Box createBox(TeXEnvironment env) {
+		TreeEditor.addAtoms(this);
+    	this.setTreeRelation();
 		TeXFont tf = env.getTeXFont();
 		int style = env.getStyle();
 		// set thickness to default if default value should be used
@@ -263,4 +266,48 @@ public class FractionAtom extends Atom {
 
 		return new HorizontalBox(vBox, vBox.getWidth() + 2 * f, TeXConstants.ALIGN_CENTER);
 	}
+	
+	public void setTreeRelation()
+    {
+    	numerator.setTreeParent(this);
+    	denominator.setTreeParent(this);
+    }
+
+	public Atom getDenom() {
+		return this.denominator;
+	}
+	
+	public Atom getNum() {
+		return this.numerator;
+	}
+
+	public void setNum(Atom base) {
+		this.numerator = base;
+	}
+	
+	public void setDenom(Atom base) {
+		this.denominator = base;
+	}
+	
+	 public Atom getNextSibling(Atom at){
+	    	if(at == numerator){
+	    		return denominator.getNextSibling(null);
+	    	}
+	    	if(at == denominator){
+	    		return getTreeParent() == null ? this : getTreeParent().getNextSibling(this);
+	    	}
+	    	return numerator.getNextSibling(null);
+	    }
+	    
+	    public Atom getPrevSibling(Atom at){
+	    	
+	    	if(at == numerator){
+	    		return getTreeParent() == null ? this : getTreeParent().getPrevSibling(this);
+	    	}
+	    	if(at == denominator){
+	    		return numerator.getPrevSibling(null);
+	    	}
+	    	return denominator.getPrevSibling(null); 
+	    	
+	    }
 }

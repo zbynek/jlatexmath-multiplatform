@@ -45,7 +45,7 @@ public class FencedAtom extends Atom {
 	private static final float DELIMITER_SHORTFALL = 5f;
 
 	// base atom
-	private final Atom base;
+	private Atom base;
 
 	// delimiters
 	private SymbolAtom left = null;
@@ -148,5 +148,14 @@ public class FencedAtom extends Atom {
 		}
 
 		return hBox;
+	}
+
+	public Atom getBase() {
+		return base;
+	}
+
+	public void setBase(Atom selAtom) {
+		this.base = selAtom;
+		
 	}
 }

@@ -170,4 +170,13 @@ public class HorizontalBox extends Box {
 
 		return new HorizontalBox[] { hb1, hb2 };
 	}
+	
+	public void updateRectangle(float scale, float x, float y) {
+        super.updateRectangle(scale, x, y);
+        float xPos = x;
+        for (Box box: children) {
+            box.updateRectangle(scale, xPos, y + box.shift);
+            xPos += box.getWidth();
+        }
+    }
 }
