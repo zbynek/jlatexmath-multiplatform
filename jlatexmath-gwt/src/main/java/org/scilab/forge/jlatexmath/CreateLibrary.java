@@ -1,7 +1,10 @@
 package org.scilab.forge.jlatexmath;
 
+import org.scilab.forge.jlatexmath.editor.EditorController;
+import org.scilab.forge.jlatexmath.editor.EditorView;
 import org.scilab.forge.jlatexmath.graphics.Graphics2DW;
 import org.scilab.forge.jlatexmath.platform.FactoryProvider;
+import org.scilab.forge.jlatexmath.platform.font.Font;
 import org.scilab.forge.jlatexmath.platform.graphics.Color;
 import org.scilab.forge.jlatexmath.platform.graphics.Graphics2DInterface;
 import org.scilab.forge.jlatexmath.platform.graphics.HasForegroundColor;
@@ -10,6 +13,8 @@ import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.dom.client.CanvasElement;
+import com.google.gwt.dom.client.NodeList;
+import com.google.gwt.dom.client.Element;
 
 public class CreateLibrary implements EntryPoint {
 
@@ -19,8 +24,18 @@ public class CreateLibrary implements EntryPoint {
 	public void onModuleLoad() {
 		FactoryProvider.INSTANCE = new FactoryProviderGWT();
 		exportLibrary();
+		NodeList<Element> nodes = getElementsByClassName("jlm-editor");
+		if(nodes.getLength() >0){
+			Element parent = nodes.getItem(0);
+			EditorView view = new EditorView(parent);
+			EditorController controller = new EditorController(view);
+			
+		}
 	}
-
+	public static native NodeList<Element> getElementsByClassName(
+				                String className) /*-{
+				                return $doc.getElementsByClassName(className);
+				        }-*/;
 	private native void exportLibrary() /*-{
 		$wnd.jlmlib = {};
 		$wnd.jlmlib.drawLatex = function(ctx, latex, size, style, x, y,

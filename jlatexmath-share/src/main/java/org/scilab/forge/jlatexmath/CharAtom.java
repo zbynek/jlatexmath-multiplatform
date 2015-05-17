@@ -65,13 +65,13 @@ public class CharAtom extends CharSymbol {
 		}
 		boolean smallCap = env.getSmallCap();
 		Char ch = getChar(env.getTeXFont(), env.getStyle(), smallCap);
-		usedBox = new CharBox(ch);
+		Box cb = new CharBox(ch);
 		if (smallCap && Character.isLowerCase(c)) {
 			// We have a small capital
-			usedBox = new ScaleBox(usedBox, 0.8f, 0.8f);
+			cb = new ScaleBox(cb, 0.8f, 0.8f);
 		}
-
-		return usedBox;
+		usedBox = cb;
+		return cb;
 	}
 
 	public char getCharacter() {
@@ -102,4 +102,6 @@ public class CharAtom extends CharSymbol {
 	public String toString() {
 		return "CharAtom: \'" + c + "\'";
 	}
+	
+	
 }

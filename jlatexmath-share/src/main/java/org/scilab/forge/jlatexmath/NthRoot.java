@@ -29,6 +29,8 @@
 
 package org.scilab.forge.jlatexmath;
 
+import org.scilab.forge.jlatexmath.editor.TreeEditor;
+
 /**
  * An atom representing an nth-root construction.
  */
@@ -50,6 +52,8 @@ public class NthRoot extends Atom {
 	}
 
 	public Box createBox(TeXEnvironment env) {
+		TreeEditor.addAtoms(this);
+    	this.setTreeRelation();
 		// first create a simple square root construction
 
 		TeXFont tf = env.getTeXFont();
@@ -108,6 +112,15 @@ public class NthRoot extends Atom {
 			return res;
 		}
 	}
+	
+	public void setTreeRelation()
+    {
+    	base.setTreeParent(this);
+    	if(root != null)
+    	{
+    		root.setTreeParent(this);
+    	}
+    }
 
 	public Atom getBase() {
 		return this.base;

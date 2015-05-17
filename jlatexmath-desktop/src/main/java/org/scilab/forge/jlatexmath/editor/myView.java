@@ -23,13 +23,14 @@ import javax.swing.JTextField;
 import org.scilab.forge.jlatexmath.Atom;
 import org.scilab.forge.jlatexmath.Box;
 import org.scilab.forge.jlatexmath.DefaultTeXFont;
+import org.scilab.forge.jlatexmath.SymbolAtom;
 import org.scilab.forge.jlatexmath.TeXConstants;
 import org.scilab.forge.jlatexmath.TeXEnvironment;
 import org.scilab.forge.jlatexmath.graphics.Graphics2DD;
 import org.scilab.forge.jlatexmath.platform.FactoryProvider;
 import org.scilab.forge.jlatexmath.platform.geom.Rectangle2D;
 
-public class myView extends JPanel implements java.util.Observer
+public class myView extends JPanel implements ModelObserver
 {
 	JPanel panel = null;
 	private Graphics saveg;
@@ -46,6 +47,7 @@ public class myView extends JPanel implements java.util.Observer
 	
 	public myView()
 	{
+		SymbolAtom.NEEDS_CLONE = true;
 		panel = new JPanel();
 		panel.requestFocus();
 		text = new JTextField(20);
@@ -69,13 +71,11 @@ public class myView extends JPanel implements java.util.Observer
 		text.addKeyListener(control);
 	}
 
-	public void update(Observable o, Object arg) 
+	public void update(Atom root0, Atom sel0) 
 	{
 		
-		ArrayList<Atom> a = (ArrayList) arg;
-		
-		root = a.get(0);
-		selAtom = a.get(1);		
+		root = root0;
+		selAtom = sel0;		
 		box = root.createBox(te);		
 		box.updateRectangle(size, (3/size), (3/size));
 		currentBox = selAtom.getBox().getRectangle();

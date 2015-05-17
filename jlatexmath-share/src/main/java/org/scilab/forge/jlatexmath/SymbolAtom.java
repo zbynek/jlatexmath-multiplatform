@@ -44,6 +44,8 @@ import org.scilab.forge.jlatexmath.platform.Resource;
  */
 public class SymbolAtom extends CharSymbol {
 
+	public static boolean NEEDS_CLONE = false;
+
 	// whether it's is a delimiter symbol
 	private final boolean delimiter;
 
@@ -138,7 +140,7 @@ public class SymbolAtom extends CharSymbol {
 		if (obj == null) // not found
 			throw new SymbolNotFoundException(name);
 		else
-			return (SymbolAtom) obj;
+			return SymbolAtom.NEEDS_CLONE ? (SymbolAtom) ((SymbolAtom) obj).clone() : (SymbolAtom) obj;
 	}
 
 	/**

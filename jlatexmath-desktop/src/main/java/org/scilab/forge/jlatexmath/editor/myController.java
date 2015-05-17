@@ -28,7 +28,7 @@ public class myController implements KeyListener, MouseListener
 
 	public void keyPressed(KeyEvent e) 
 	{
-		model.keyPressed(e);
+		model.keyPressed(e.getKeyCode(), e.isAltDown(), e.isControlDown());
 	}
 
 	public void keyReleased(KeyEvent e) 

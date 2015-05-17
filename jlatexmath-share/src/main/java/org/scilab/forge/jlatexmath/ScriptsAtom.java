@@ -31,6 +31,8 @@
 
 package org.scilab.forge.jlatexmath;
 
+import org.scilab.forge.jlatexmath.editor.TreeEditor;
+
 /**
  * An atom representing scripts to be attached to another atom.
  */
@@ -60,6 +62,8 @@ public class ScriptsAtom extends Atom {
 	}
 
 	public Box createBox(TeXEnvironment env) {
+		TreeEditor.addAtoms(this);
+    	this.setTreeRelations();
 		Box b = (base == null ? new StrutBox(0, 0, 0, 0) : base.createBox(env));
 		Box deltaSymbol = new StrutBox(0, 0, 0, 0);
 		if (subscript == null && superscript == null)
@@ -207,6 +211,16 @@ public class ScriptsAtom extends Atom {
 			}
 		}
 	}
+	
+	public void setTreeRelations() {
+    	base.setTreeParent(this);
+    	if(superscript != null){		
+    		superscript.setTreeParent(this);
+    	}
+    	if(subscript != null){		
+    		subscript.setTreeParent(this);
+    	}
+    }
 
 	public int getLeftType() {
 		return base.getLeftType();

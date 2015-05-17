@@ -43,8 +43,10 @@ public class TreeEditor
 	public void keyTyped(TeXFormula formula, Atom r, char c)
 	{
 		this.formula = formula;
-		if(selAtom == null)
+		if(selAtom == null){
+			System.out.println("reset");
 			selAtom = r;
+		}
 		treeParent = selAtom.getTreeParent();
 		String com = null;
 		switch(c)
