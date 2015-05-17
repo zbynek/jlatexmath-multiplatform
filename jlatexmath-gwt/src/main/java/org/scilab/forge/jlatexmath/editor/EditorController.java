@@ -21,6 +21,9 @@ public class EditorController implements KeyDownHandler, KeyPressHandler{
 	@Override
 	public void onKeyDown(KeyDownEvent event) {
 		log(event.getNativeKeyCode()+" DOWN");
+		if(event.getNativeKeyCode() == 8){
+			event.preventDefault();
+		}
 		model.keyPressed(event.getNativeKeyCode(), event.isAltKeyDown(), event.isControlKeyDown());
 		
 		
@@ -33,6 +36,7 @@ public class EditorController implements KeyDownHandler, KeyPressHandler{
 	@Override
 	public void onKeyPress(KeyPressEvent event) {
 		log(event.getCharCode()+" PRESS");
+		event.preventDefault();
 		model.keyTyped(event.getCharCode());
 		
 	}
